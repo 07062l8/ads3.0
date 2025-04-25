@@ -24,6 +24,8 @@ public class MyTestingClass {
             case "pink":    sparkles += 999; break;
             case "purple": sparkles += 555; break;
             case "blue":    sparkles += 333; break;
+            case "white": sparkles += 777; break;
+            case "black": sparkles += 444; break;
             default:          sparkles += 111;
         }
 

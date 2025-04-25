@@ -110,5 +110,19 @@ public class MyHashTable<K, V> {
         }
         return null;
     }
+
+    public void printNumElements() {
+        System.out.println("\nDistribution of elements into buckets:");
+        for (int i = 0; i < M; i++) {
+            int count = 0;
+            HashNode<K, V> current = chainArray[i];
+            while (current != null) {
+                count++;
+                current = current.next;
+            }
+            System.out.printf("Bucket %2d: %4d elements%n", i, count);
+        }
+        System.out.println("Total elements: " + size + "\n");
+    }
 }
 
