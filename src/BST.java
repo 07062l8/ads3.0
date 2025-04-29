@@ -1,4 +1,6 @@
-public class BST<K extends Comparable<K>, V> {
+import java.util.*;
+
+public class BST<K extends Comparable<K>, V>  implements Iterable<BST<K, V>.Entry> {
     private Node root;
     private int size = 0;
     private class Node {
@@ -11,6 +13,23 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
+    public class Entry {
+        private final K key;
+        private final V value;
+
+        public Entry(K key, V value) {
+            this.key = key;
+            this.value = value;
+        }
+
+        public K getKey() {
+            return key;
+        }
+
+        public V getValue() {
+            return value;
+        }
+    }
     public int size() {
         return size;
     }
@@ -125,8 +144,59 @@ public class BST<K extends Comparable<K>, V> {
         }
     }
 
-    public Iterable<K> iterator() {
-        return inOrderTraversal();
+    @Override
+    public Iterator<Entry> iterator() {
+        return new BSTIterator();
+    }
+
+    private class BSTIterator implements Iterator<Entry> {
+        private final Stack<Node> stack = new Stack<>();
+
+        public BSTIterator() {
+            pushLeft(root);
+        }
+
+        private void pushLeft(Node node) {
+            while (node != null) {
+                stack.push(node);
+                node = node.left;
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return !stack.isEmpty();
+        }
+
+        @Override
+        public Entry next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+
+            Node node = stack.pop();
+            pushLeft(node.right);
+
+            return new Entry(node.key, node.val);
+        }
+    }
+
+    public static void main(String[] args) {
+        BST<String, Integer> tree = new BST<>();
+        tree.put("D", 4);
+        tree.put("B", 2);
+        tree.put("F", 6);
+        tree.put("A", 1);
+        tree.put("C", 3);
+        tree.put("E", 5);
+        tree.put("G", 7);
+
+        System.out.println("In-order traversal:");
+        for (BST<String, Integer>.Entry entry : tree) {
+            System.out.println("Key: " + entry.getKey() + ", Value: " + entry.getValue());
+        }
+
+        System.out.println("\nSize: " + tree.size());
     }
 
 
