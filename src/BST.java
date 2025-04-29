@@ -19,10 +19,13 @@ public class BST<K extends Comparable<K>, V> {
         Node newNode = new Node(key, val);
         if (root == null) {
             root = newNode;
+            size++;
             return;
         }
+
         Node current = root;
         Node parent = null;
+        boolean found = false;
 
         while (current != null) {
             parent = current;
@@ -33,14 +36,19 @@ public class BST<K extends Comparable<K>, V> {
                 current = current.right;
             } else {
                 current.val = val;
-                return;
+                found = true;
+                break;
             }
         }
-        int cmp = key.compareTo(parent.key);
-        if (cmp < 0) {
-            parent.left = newNode;
-        } else {
-            parent.right = newNode;
+
+        if (!found) {
+            int cmp = key.compareTo(parent.key);
+            if (cmp < 0) {
+                parent.left = newNode;
+            } else {
+                parent.right = newNode;
+            }
+            size++;
         }
     }
 
@@ -72,9 +80,10 @@ public class BST<K extends Comparable<K>, V> {
                 current = current.right;
             }
         }
-        if (current == null) {
-            return;
-        }
+
+        if (current == null) return;
+
+        // Case 1: Node has no children or one child
         if (current.left == null || current.right == null) {
             Node replacement = (current.left != null) ? current.left : current.right;
 
@@ -85,7 +94,9 @@ public class BST<K extends Comparable<K>, V> {
             } else {
                 parent.right = replacement;
             }
+            size--;
         }
+        // Case 2: Node has two children
         else {
             Node successorParent = current;
             Node successor = current.right;
@@ -109,6 +120,7 @@ public class BST<K extends Comparable<K>, V> {
             } else {
                 parent.right = successor;
             }
+            size--;
         }
     }
 
