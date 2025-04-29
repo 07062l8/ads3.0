@@ -98,6 +98,7 @@ public class BST<K extends Comparable<K>, V> {
         }
         // Case 2: Node has two children
         else {
+            // Find the inorder successor (smallest in right subtree)
             Node successorParent = current;
             Node successor = current.right;
 
